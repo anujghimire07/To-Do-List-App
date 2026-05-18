@@ -27,7 +27,7 @@ function App() {
               if (text === "") {
                 alert("Task cannot be empty");
               } else {
-                setlist([...list, text]);
+                setlist([...list, { text: text, completed: false }]);
               }
               settext("");
             }}
@@ -42,8 +42,27 @@ function App() {
           <ol>
             {list.map((item, index) => (
               <li key={index}>
-                <input type="checkbox" />
-                {item}
+                <input
+                  type="checkbox"
+                  checked={item.completed}
+                  onChange={() => {
+                    const updated = [...list];
+                    updated[index] = {
+                      text: item.text,
+                      completed: !item.completed,
+                    };
+                    setlist(updated);
+                  }}
+                />
+                <span
+                  style={{
+                    textDecoration: item.completed ? "line-through" : "none",
+                    color: item.completed ? "#9aa0a6" : "#e8eaed",
+                    opacity: item.completed ? 0.7 : 1,
+                  }}
+                >
+                  {item.text}
+                </span>
                 <button
                   onClick={() => setlist(list.filter((_, i) => i !== index))}
                 >
